@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kartu Ucapan Ulang Tahun</title>
+  <style>
+    :root{
+      --bg1: #0ea5ea;
+      --bg2: #7c3aed;
+      --primary: #ff9f1c;
+      --accent: #22c55e;
+      --ink: #0f172a;
+      --card: #ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
+      background: linear-gradient(135deg,var(--bg1),var(--bg2));
+      background-size: 200% 200%;
+      animation: bg-move 14s ease-in-out infinite;
+    }
+    @keyframes bg-move{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}/* Floating balloons */
+.balloons{position:fixed; inset:0; pointer-events:none; overflow:hidden}
+.balloon{position:absolute; bottom:-15vh; width:56px; height:74px; border-radius:50% 50% 45% 45%;
+  background: radial-gradient(circle at 30% 30%, #fff8, transparent 45%), var(--primary);
+  box-shadow: 0 8px 20px #0003;
+  animation: float 16s linear infinite;
+  transform: translateX(-50%);
+}
+.balloon:after{content:""; position:absolute; left:50%; top:68px; width:2px; height:90px; background:#0002}
+.b2{background: radial-gradient(circle at 30% 30%, #fff8, transparent 45%), #ef4444}
+.b3{background: radial-gradient(circle at 30% 30%, #fff8, transparent 45%), #22c55e}
+.b4{background: radial-gradient(circle at 30% 30%, #fff8, transparent 45%), #3b82f6}
+.b5{background: radial-gradient(circle at 30% 30%, #fff8, transparent 45%), #eab308}
+@keyframes float{0%{transform:translateY(0) translateX(var(--x,0)) rotate(0)}100%{transform:translateY(-140vh) translateX(calc(var(--x,0) + 40px)) rotate(6deg)}}
+
+.wrap{min-height:100%; display:grid; place-items:center; padding:24px}
+
+.card{
+  position:relative;
+  width:min(780px, 95vw);
+  background:linear-gradient(180deg,#ffffffee,#ffffffdd);
+  backdrop-filter: blur(6px);
+  border-radius:24px;
+  box-shadow: 0 20px 60px #0005;
+  overflow:hidden;
+}
+.card:before{content:""; position:absolute; inset:0; background:radial-gradient(1200px 300px at -10% -10%, #fff6, transparent 60%), radial-gradient(600px 200px at 110% -15%, #fff6, transparent 60%)}
+
+header{padding:28px 28px 12px}
+.tag{display:inline-block; padding:6px 12px; border-radius:9999px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; background:#0000000d}
+
+.title{
+  margin:8px 0 0;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height:1.1;
+  font-weight:800;
+  background: linear-gradient(90deg, var(--primary), #fb7185, #60a5fa, var(--accent));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+main{padding:0 28px 24px}
+.to-line{font-size:18px; margin:14px 0 2px}
+.editable{display:inline-block; min-width:8ch; padding:2px 6px; border-radius:8px; outline:none; transition: box-shadow .2s, background .2s}
+.editable[contenteditable="true"]:focus{background:#fff8; box-shadow:0 0 0 3px #0001}
+.msg{margin:16px 0 0; font-size: clamp(16px, 2.6vw, 18px); line-height:1.75}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+.chip{font-size:12px; padding:6px 10px; border-radius:9999px; background:#0000000b}
+
+.footer{display:flex; align-items:center; gap:12px; justify-content:space-between; padding:20px 24px; background:linear-gradient(180deg, #00000005, #0000000a)}
+.from{font-size:14px}
+
+.btns{display:flex; flex-wrap:wrap; gap:10px}
+button{
+  appearance:none; border:0; cursor:pointer; border-radius:12px; padding:10px 14px; font-weight:700;
+  background: var(--ink); color:white; box-shadow: 0 8px 20px #0004; transition: transform .06s ease, box-shadow .2s ease;
+}
+button:active{transform: translateY(1px); box-shadow: 0 4px 12px #0005}
+.btn-ghost{background:#00000014; color:#0f172a}
+
+/* confetti */
+.confetti{position:fixed; inset:0; overflow:hidden; pointer-events:none}
+.piece{position:absolute; width:10px; height:14px; opacity:.9; transform:translateY(-20vh) rotate(0deg); animation: drop 1800ms linear forwards;}
+@keyframes drop{to{transform:translateY(120vh) rotate(720deg); opacity:1}}
+
+/* small print */
+.hint{font-size:12px; opacity:.7}
+
+@media print{
+  body{background:white}
+  .balloons,.btns,.chips,.hint{display:none}
+  .card{box-shadow:none}
+}
+
+  </style>
+</head>
+<body>
+  <!-- decorative balloons (positions are randomized via JS on load) -->
+  <div class="balloons" id="balloons"></div>  <div class="wrap">
+    <article class="card" id="card">
+      <header>
+        <span class="tag">hallo</span>
+        <h1 class="title">Selamat Ulang Tahun yang ke 13! 🎉</h1>
+      </header><main>
+    <p class="to-line">Untuk <span class="editable" id="to" contenteditable="true" spellcheck="false">Arya</span>,</p>
+    <p class="msg editable" id="message" contenteditable="true" spellcheck="false">
+      Semoga hari istimewa ini dipenuhi tawa, doa yang baik, dan kejutan manis. 
+      Tahun baru usiamu membawa kesehatan, rezeki, dan kebahagiaan yang berlimpah. 
+      Tetap jadi dirimu yang hebat—kita rayakan bersama! 🥳
+    </p>
+    <div class="chips">
+      <span class="chip">🎂 Panjang umur</span>
+      <span class="chip">💝 Sehat selalu</span>
+      <span class="chip">🚀 Sukses ke depan</span>
+      <span class="chip">😊 Bahagia tiap hari</span>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="from">Dari <span class="editable" id="from" contenteditable="true" spellcheck="false">Kenzi</span>
+    </div>
+    <div class="btns">
+      <button class="btn-ghost" id="themeBtn">
+      <button class="btn-ghost" id="celebrateBtn">
+    </div>
+  </footer>
+</article>
+
+  </div>  <div class="confetti" id="confetti"></div>  <script>
+    // Randomize balloons
+    const balloons = document.getElementById('balloons');
+    const colors = ['#ef4444','#22c55e','#3b82f6','#f97316','#eab308','#a855f7','#06b6d4'];
+    for(let i=0;i<14;i++){
+      const b=document.createElement('div');
+      b.className='balloon b'+((i%5)+1);
+      const left = Math.random()*100; // vw
+      b.style.left = left+"vw";
+      b.style.setProperty('--x', (Math.random()*40 - 20) + 'px');
+      b.style.animationDelay = (Math.random()*-16)+'s';
+      b.style.filter = `hue-rotate(${Math.floor(Math.random()*360)}deg)`;
+      balloons.appendChild(b);
+    }
+
+    // Theme switcher using CSS variables
+    const themeBtn = document.getElementById('themeBtn');
+    themeBtn.addEventListener('click', ()=>{
+      const rand = () => colors[Math.floor(Math.random()*colors.length)];
+      document.documentElement.style.setProperty('--bg1', rand());
+      document.documentElement.style.setProperty('--bg2', rand());
+      document.documentElement.style.setProperty('--primary', rand());
+      document.documentElement.style.setProperty('--accent', rand());
+    });
+
+    // Confetti burst
+    const confettiRoot = document.getElementById('confetti');
+    const celebrateBtn = document.getElementById('celebrateBtn');
+    function burst(x,y){
+      for(let i=0;i<120;i++){
+        const p=document.createElement('div');
+        p.className='piece';
+        p.style.left = (x + (Math.random()*200-100)) + 'px';
+        p.style.top = (y + (Math.random()*100-50)) + 'px';
+        p.style.background = colors[Math.floor(Math.random()*colors.length)];
+        p.style.transform += ` scale(${(Math.random()*0.8)+0.6})`;
+        p.style.animationDuration = (1200 + Math.random()*1000) + 'ms';
+        confettiRoot.appendChild(p);
+        setTimeout(()=>p.remove(), 2000);
+      }
+    }
+    celebrateBtn.addEventListener('click', (e)=>{
+      const rect = e.target.getBoundingClientRect();
+      burst(rect.left+rect.width/2, rect.top);
+    });
+    // Bonus: click anywhere to burst
+    document.addEventListener('click', (e)=>{
+      if(!e.target.closest('button')) burst(e.clientX, e.clientY);
+    })
+
+    // Copy composed message
+    document.getElementById('copyBtn').addEventListener('click', async ()=>{
+      const to = document.getElementById('to').innerText.trim();
+      const msg = document.getElementById('message').innerText.trim();
+      const from = document.getElementById('from').innerText.trim();
+      const text = `Selamat Ulang Tahun, ${to}!\n\n${msg}\n\n— ${from}`;
+      try{ await navigator.clipboard.writeText(text); alert('Ucapan berhasil disalin!'); }
+      catch{ prompt('Salin manual:', text); }
+    });
+
+    // Print
+    document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+  </script></body>
+</html>
